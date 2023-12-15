@@ -1,0 +1,15 @@
+// Measurement time of execution code 
+// Dependencies : SysTimeCore library 
+
+VAR 
+  startTime : ULINT;
+	endTime 	: ULINT;
+	deltaTime : ULINT;
+END_VAR 
+
+// insert before measured code 
+SysTimeGetNs(pUsTime := startTime); 
+
+// insert after measured code
+SysTimeGetNs(pUsTime := endTime); 
+deltaTime := EndTime - startTime;
