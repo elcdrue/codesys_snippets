@@ -9,17 +9,17 @@ VAR_INPUT
 END_VAR
 
 VAR_OUTPUT
-	deltaTime 			: ULINT; // Время выполнения (нс)	
+	deltaTime 		: ULINT; // Время выполнения (нс)	
 	minDeltaTime		: ULINT; // Минимальное время выполнения (нс)
  	maxDeltaTime		: ULINT; // Максимальное время выполнения (нс)
 	avgDeltaTime		: ULINT; // Среднее время выполнения (нс)
-	cnt					: ULINT; // Количество циклов  
+	cnt			: ULINT; // Количество циклов  
 END_VAR
 
 VAR
-	startTime 			: ULINT; // Время начала (нс)
-	endTime 			: ULINT; // Время конца (нс)
-	totalTime			: ULINT; // Суммарное время выполнения для вычисления среднего времени 
+	startTime 		: ULINT; // Время начала (нс)
+	endTime 		: ULINT; // Время конца (нс)
+	totalTime		: ULINT; // Суммарное время выполнения для вычисления среднего времени 
 END_VAR
 
 IF NOT END THEN
