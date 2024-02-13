@@ -1,15 +1,52 @@
-// Measurement time of execution code 
-// Dependencies : SysTimeCore library 
+/// ФБ замера производительности кода (результат в нс)
+//| Вызывается без аргументов или с END :=0 перед началом выполнения замеряемого кода
+//| Вызывается с END :=1 после завершения выполнения замеряемого кода
 
-VAR 
-  startTime : ULINT;
-	endTime 	: ULINT;
-	deltaTime : ULINT;
-END_VAR 
+{attribute 'hide_all_locals'}
+FUNCTION_BLOCK EXECUTION_TIME
+VAR_INPUT
+	END : BOOL; // окончание замера
+END_VAR
 
-// insert before measured code 
-SysTimeGetNs(pUsTime := startTime); 
+VAR_OUTPUT
+	deltaTime 			: ULINT; // Время выполнения (нс)	
+	minDeltaTime		: ULINT; // Минимальное время выполнения (нс)
+ 	maxDeltaTime		: ULINT; // Максимальное время выполнения (нс)
+	avgDeltaTime		: ULINT; // Среднее время выполнения (нс)
+	cnt					: ULINT; // Количество циклов  
+END_VAR
 
-// insert after measured code
-SysTimeGetNs(pUsTime := endTime); 
-deltaTime := EndTime - startTime;
+VAR
+	startTime 			: ULINT; // Время начала (нс)
+	endTime 			: ULINT; // Время конца (нс)
+	totalTime			: ULINT; // Суммарное время выполнения для вычисления среднего времени 
+END_VAR
+
+IF NOT END THEN
+	SysTimeGetNs(pUsTime := startTime);
+ELSE
+	
+	SysTimeGetNs(pUsTime := endTime); 
+	deltaTime := EndTime - startTime;
+ 
+	IF maxDeltaTime < deltaTime THEN 
+		maxDeltaTime := deltaTime;
+	END_IF;
+	
+	IF minDeltaTime > deltaTime THEN 
+		minDeltaTime := deltaTime; 
+	END_IF
+	
+	cnt := cnt + 1;
+	
+	IF cnt = 1 THEN
+		minDeltaTime := deltaTime; 
+		totalTime := deltaTime;   	 
+	ELSE 
+		totalTime := totalTime + deltaTime; 
+		avgDeltaTime := totalTime / cnt;
+	END_IF
+	
+END_IF 
+
+END := 0; // сброс входной переменной
